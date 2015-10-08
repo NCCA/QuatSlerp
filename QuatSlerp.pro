@@ -16,9 +16,12 @@ MOC_DIR=moc
 # on a mac we don't create a .app bundle file ( for ease of multiplatform use)
 CONFIG-=app_bundle
 # Auto include all .cpp files in the project src directory (can specifiy individually if required)
-SOURCES+= $$PWD/src/*.cpp
+SOURCES+= $$PWD/src/MainWindow.cpp\
+					$$PWD/src/NGLScene.cpp  \
+					$$PWD/src/main.cpp
 # same for the .h files
-HEADERS+= $$PWD/include/*.h
+HEADERS+= $$PWD/include/MainWindow.h \
+					$$PWD/include/NGLScene.h
 # add the Qt form
 FORMS += ui/MainWindow.ui
 

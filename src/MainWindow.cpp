@@ -4,12 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),  m_ui(new Ui::MainWindow)
 {
     m_ui->setupUi(this);
-    // create an openGL format and pass to the new GLWidget
-    QGLFormat format;
-    format.setVersion(3,2);
-    format.setProfile( QGLFormat::CoreProfile);
-
-    m_gl=new  GLWindow(format,this);
+    m_gl=new  NGLScene(this);
     // row span col span
     m_ui->s_mainWindowGridLayout->addWidget(m_gl,0,0,12,1);
     // set the rotation signals
