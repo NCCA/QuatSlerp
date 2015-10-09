@@ -1,3 +1,4 @@
+
 #include "NGLScene.h"
 #include <iostream>
 #include <ngl/Vec3.h>
@@ -192,7 +193,6 @@ void NGLScene::mouseReleaseEvent (
 
 NGLScene::~NGLScene()
 {
-  ngl::NGLInit *init = ngl::NGLInit::instance();
-  init->NGLQuit();
+  
 }
 
