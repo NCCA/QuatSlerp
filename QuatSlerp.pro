@@ -21,7 +21,7 @@ SOURCES+= $$PWD/src/MainWindow.cpp\
 					$$PWD/src/main.cpp
 # same for the .h files
 HEADERS+= $$PWD/include/MainWindow.h \
-					$$PWD/include/NGLScene.h
+          $$PWD/include/NGLScene.h
 # add the Qt form
 FORMS += ui/MainWindow.ui
 

@@ -36,7 +36,7 @@ void NGLScene::initializeGL()
   glEnable(GL_DEPTH_TEST);
   /// create our camera in this case we are generating it from
   /// the util lookAt function as the camera doesn't move
-  ngl::Vec3 eye(0,0,3);
+  ngl::Vec3 eye(0,0,4);
   ngl::Vec3 look(0,0,0);
   ngl::Vec3 up(0,1,0);
   m_lookAt=ngl::lookAt(eye,look,up);
@@ -57,7 +57,7 @@ void NGLScene::initializeGL()
 void NGLScene::resizeGL(int _w,int _h)
 {
   glViewport(0,0,_w,_h);
-  m_projection=ngl::infinitePerspective(60.0f,1024.0/720.0,0.2f);
+  m_projection=ngl::infinitePerspective(60.0f,1024.0f/720.0f,0.2f);
 }
 
 
