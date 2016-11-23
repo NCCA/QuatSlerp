@@ -7,9 +7,9 @@
 .qmake*
 moc/
 moc_*
+ui_*
 # shadow build directories
 build-*
-ui_*
 Makefile
 # Compiled Dynamic libraries
 *.so
@@ -44,3 +44,11 @@ Makefile
 *.tgz
 *.zip
 *.tar.gz
+#Cmake
+
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
