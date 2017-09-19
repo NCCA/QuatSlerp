@@ -46,9 +46,9 @@ void NGLScene::initializeGL()
   // we are going to use the built in nglDiffuse shader
   (*shader)["nglDiffuseShader"]->use();
   // set the directional light position colour and diffuse
-  shader->setRegisteredUniform("lightPos",1.0f,1.0f,1.0f);
-  shader->setRegisteredUniform("Colour",1.0f,0.0f,0.0f,1.0f);
-  shader->setRegisteredUniform("lightDiffuse",1.0f,1.0f,1.0f,1.0f);
+  shader->setUniform("lightPos",1.0f,1.0f,1.0f);
+  shader->setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
+  shader->setUniform("lightDiffuse",1.0f,1.0f,1.0f,1.0f);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -73,8 +73,8 @@ void NGLScene::loadMatricesToShader()
   MVP=MV*m_projection;
   normalMatrix=MV;
   normalMatrix.inverse();
-  shader->setRegisteredUniform("MVP",MVP);
-  shader->setRegisteredUniform("normalMatrix",normalMatrix);
+  shader->setUniform("MVP",MVP);
+  shader->setUniform("normalMatrix",normalMatrix);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ void NGLScene::paintGL()
   // now set this matrix to be the current transform for the tx stack
   // we now load this to the shaders
   m_transform.setMatrix(tx);
-  shader->setRegisteredUniform("Colour",1.0f,1.0f,0.0f,1.0f);
+  shader->setUniform("Colour",1.0f,1.0f,0.0f,1.0f);
   loadMatricesToShader();
   prim->draw("teapot");
 
@@ -128,13 +128,13 @@ void NGLScene::paintGL()
   // and set the position in the x to the teapot is on the left
   tx.m_30=-2.0;
   m_transform.setMatrix(tx);
-  shader->setRegisteredUniform("Colour",1.0f,0.0f,0.0f,1.0f);
+  shader->setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
   loadMatricesToShader();
   prim->draw("teapot");
   // in this case we use the normal tx stack version instead
   m_transform.setPosition(2.0f,0.0f,0.0f);
   m_transform.setRotation(m_erotation);
-  shader->setRegisteredUniform("Colour",0.0f,1.0f,0.0f,1.0f);
+  shader->setUniform("Colour",0.0f,1.0f,0.0f,1.0f);
 
   loadMatricesToShader();
   prim->draw("teapot");
@@ -166,28 +166,19 @@ void NGLScene::paintGL()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void NGLScene::mouseMoveEvent (
-                               QMouseEvent * _event
-                              )
+void NGLScene::mouseMoveEvent (QMouseEvent *)
 {
-  Q_UNUSED(_event);
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-void NGLScene::mousePressEvent (
-                                QMouseEvent * _event
-                               )
+void NGLScene::mousePressEvent ( QMouseEvent *  )
 {
-  Q_UNUSED(_event);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void NGLScene::mouseReleaseEvent (
-                                  QMouseEvent * _event
-                                 )
+void NGLScene::mouseReleaseEvent (QMouseEvent *  )
 {
-  Q_UNUSED(_event);
 }
 
 
