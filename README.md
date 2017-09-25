@@ -1,4 +1,4 @@
-#QuatSlerp
+# QuatSlerp
 
 ![alt tag](http://nccastaff.bournemouth.ac.uk/jmacey/GraphicsLib/Demos/SLERP.png)
 
