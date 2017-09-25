@@ -69,10 +69,10 @@ void NGLScene::loadMatricesToShader()
   ngl::Mat4 MVP;
   ngl::Mat4 MV;
   ngl::Mat3 normalMatrix;
-  MV=m_transform.getMatrix()*m_lookAt;
-  MVP=MV*m_projection;
+  MV=m_lookAt*m_transform.getMatrix();
+  MVP=m_projection*MV;
   normalMatrix=MV;
-  normalMatrix.inverse();
+  normalMatrix.inverse().transpose();
   shader->setUniform("MVP",MVP);
   shader->setUniform("normalMatrix",normalMatrix);
 }
