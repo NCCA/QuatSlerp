@@ -1,7 +1,6 @@
 #ifndef NGLSCENE_H_
 #define NGLSCENE_H_
 
-#include <ngl/Camera.h>
 #include <ngl/Transformation.h>
 #include <ngl/Vec3.h>
 #include "WindowParams.h"
