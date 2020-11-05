@@ -29,7 +29,7 @@ NGLScene::NGLScene(QWidget *_parent ) : QOpenGLWidget(_parent)
 //----------------------------------------------------------------------------------------------------------------------
 void NGLScene::initializeGL()
 {
-  ngl::NGLInit::instance();
+  ngl::NGLInit::initialize();
 
   glClearColor(0.4f, 0.4f, 0.4f, 1.0f);			   // Grey Background
   // enable depth testing for drawing
@@ -40,15 +40,12 @@ void NGLScene::initializeGL()
   ngl::Vec3 look(0,0,0);
   ngl::Vec3 up(0,1,0);
   m_lookAt=ngl::lookAt(eye,look,up);
-  // now to load the shader and set the values
-  // grab an instance of shader manager
-  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-  // we are going to use the built in nglDiffuse shader
-  (*shader)["nglDiffuseShader"]->use();
+ // we are going to use the built in nglDiffuse shader
+  ngl::ShaderLib::use("nglDiffuseShader");
   // set the directional light position colour and diffuse
-  shader->setUniform("lightPos",1.0f,1.0f,1.0f);
-  shader->setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
-  shader->setUniform("lightDiffuse",1.0f,1.0f,1.0f,1.0f);
+  ngl::ShaderLib::setUniform("lightPos",1.0f,1.0f,1.0f);
+  ngl::ShaderLib::setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
+  ngl::ShaderLib::setUniform("lightDiffuse",1.0f,1.0f,1.0f,1.0f);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -63,9 +60,7 @@ void NGLScene::resizeGL(int _w,int _h)
 
 void NGLScene::loadMatricesToShader()
 {
-  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-  (*shader)["nglDiffuseShader"]->use();
-
+  ngl::ShaderLib::use("nglDiffuseShader");
   ngl::Mat4 MVP;
   ngl::Mat4 MV;
   ngl::Mat3 normalMatrix;
@@ -73,8 +68,8 @@ void NGLScene::loadMatricesToShader()
   MVP=m_projection*MV;
   normalMatrix=MV;
   normalMatrix.inverse().transpose();
-  shader->setUniform("MVP",MVP);
-  shader->setUniform("normalMatrix",normalMatrix);
+  ngl::ShaderLib::setUniform("MVP",MVP);
+  ngl::ShaderLib::setUniform("normalMatrix",normalMatrix);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -83,12 +78,7 @@ void NGLScene::loadMatricesToShader()
 void NGLScene::paintGL()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  ngl::VAOPrimitives *prim=ngl::VAOPrimitives::instance();
-  // grab the shader manager
-  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-  (*shader)["nglDiffuseShader"]->use();
-
-
+  ngl::ShaderLib::use("nglDiffuseShader");
   // create some matrices to help with our rotations
   ngl::Mat4 start;
   ngl::Mat4 sx,sy,sz;
@@ -119,31 +109,31 @@ void NGLScene::paintGL()
   // now set this matrix to be the current transform for the tx stack
   // we now load this to the shaders
   m_transform.setMatrix(tx);
-  shader->setUniform("Colour",1.0f,1.0f,0.0f,1.0f);
+  ngl::ShaderLib::setUniform("Colour",1.0f,1.0f,0.0f,1.0f);
   loadMatricesToShader();
-  prim->draw("teapot");
+  ngl::VAOPrimitives::draw("teapot");
 
   // in this case I will convert to a rotation matrix from the quat
   tx=startQuat.toMat4();
   // and set the position in the x to the teapot is on the left
   tx.m_30=-2.0;
   m_transform.setMatrix(tx);
-  shader->setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
+  ngl::ShaderLib::setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
   loadMatricesToShader();
-  prim->draw("teapot");
+  ngl::VAOPrimitives::draw("teapot");
   // in this case we use the normal tx stack version instead
   m_transform.setPosition(2.0f,0.0f,0.0f);
   m_transform.setRotation(m_erotation);
-  shader->setUniform("Colour",0.0f,1.0f,0.0f,1.0f);
+  ngl::ShaderLib::setUniform("Colour",0.0f,1.0f,0.0f,1.0f);
 
   loadMatricesToShader();
-  prim->draw("teapot");
+  ngl::VAOPrimitives::draw("teapot");
 
 
   //now do all the text ui stuff
   QString s;
   s.sprintf("%f [%f,%f,%f]",startQuat.getS(),startQuat.getX(),startQuat.getY(),startQuat.getZ());
-  // once we set the text emit it to the MainWindow where things are attatched
+  // once we set the text emit it to the MainWindow where things are attached
   emit changeStartQuat(s);
   s.sprintf("%f [%f,%f,%f]",endQuat.getS(),endQuat.getX(),endQuat.getY(),endQuat.getZ());
   emit changeEndQuat(s);
