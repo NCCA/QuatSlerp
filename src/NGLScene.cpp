@@ -80,7 +80,7 @@ void NGLScene::paintGL()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   ngl::ShaderLib::use("nglDiffuseShader");
   // create some matrices to help with our rotations
-  ngl::Mat4 start;
+  //ngl::Mat4 start;
   ngl::Mat4 sx,sy,sz;
   ngl::Mat4 end;
   ngl::Mat4 ex,ey,ez;
@@ -89,12 +89,12 @@ void NGLScene::paintGL()
   sx.rotateX(m_srotation.m_x);
   sy.rotateY(m_srotation.m_y);
   sz.rotateZ(m_srotation.m_z);
-  start=sx*sy*sz;
+  //start=sx*sy*sz;
   // same for the end rotation
   ex.rotateX(m_erotation.m_x);
   ey.rotateY(m_erotation.m_y);
   ez.rotateZ(m_erotation.m_z);
-  end=ex*ey*ez;
+  end=ez*ey*ex;
   // just to demonstrate we can construct from a vec3 with x,y,z
   ngl::Quaternion startQuat(m_srotation);
   // or a matrix the ends are the same
@@ -103,9 +103,34 @@ void NGLScene::paintGL()
   // Now we interpolate between the start and end quat using a value
   // from 0-1 this will return a quat
   ngl::Quaternion i=ngl::Quaternion::slerp(startQuat,endQuat,m_interp);
+  
+  
   // convert this Quat into a matrix and use this for the final
   // rotation
   ngl::Mat4 tx=i.toMat4();
+  // print debug here as we will re-use tx later.
+  QString s;
+  s.sprintf("%f [%f,%f,%f]",startQuat.getS(),startQuat.getX(),startQuat.getY(),startQuat.getZ());
+  // once we set the text emit it to the MainWindow where things are attached
+  emit changeStartQuat(s);
+  s.sprintf("%f [%f,%f,%f]",endQuat.getS(),endQuat.getX(),endQuat.getY(),endQuat.getZ());
+  emit changeEndQuat(s);
+  s.sprintf("%f [%f,%f,%f]",i.getS(),i.getX(),i.getY(),i.getZ());
+  emit changeInterpQuat(s);
+  emit clearMatrixText();
+  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_00,tx.m_01,tx.m_02,tx.m_03);
+  emit appendMatrixText(s);
+  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_10,tx.m_11,tx.m_12,tx.m_13);
+  emit appendMatrixText(s);
+  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_20,tx.m_21,tx.m_22,tx.m_23);
+  emit appendMatrixText(s);
+  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_30,tx.m_31,tx.m_32,tx.m_33);
+  emit appendMatrixText(s);
+
+  s.sprintf("Interpolate value = %0.2f",m_interp);
+  emit updateInterpText(s);
+
+  
   // now set this matrix to be the current transform for the tx stack
   // we now load this to the shaders
   m_transform.setMatrix(tx);
@@ -131,27 +156,7 @@ void NGLScene::paintGL()
 
 
   //now do all the text ui stuff
-  QString s;
-  s.sprintf("%f [%f,%f,%f]",startQuat.getS(),startQuat.getX(),startQuat.getY(),startQuat.getZ());
-  // once we set the text emit it to the MainWindow where things are attached
-  emit changeStartQuat(s);
-  s.sprintf("%f [%f,%f,%f]",endQuat.getS(),endQuat.getX(),endQuat.getY(),endQuat.getZ());
-  emit changeEndQuat(s);
-  s.sprintf("%f [%f,%f,%f]",i.getS(),i.getX(),i.getY(),i.getZ());
-  emit changeInterpQuat(s);
-  emit clearMatrixText();
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_00,tx.m_01,tx.m_02,tx.m_03);
-  emit appendMatrixText(s);
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_10,tx.m_11,tx.m_12,tx.m_13);
-  emit appendMatrixText(s);
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_20,tx.m_21,tx.m_22,tx.m_23);
-  emit appendMatrixText(s);
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_30,tx.m_31,tx.m_32,tx.m_33);
-  emit appendMatrixText(s);
-
-  s.sprintf("Interpolate value = %0.2f",m_interp);
-  emit updateInterpText(s);
-
+  
 
 }
 
