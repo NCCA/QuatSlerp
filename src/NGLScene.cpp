@@ -110,24 +110,24 @@ void NGLScene::paintGL()
   ngl::Mat4 tx=i.toMat4();
   // print debug here as we will re-use tx later.
   QString s;
-  s.sprintf("%f [%f,%f,%f]",startQuat.getS(),startQuat.getX(),startQuat.getY(),startQuat.getZ());
+  s.asprintf("%f [%f,%f,%f]",startQuat.getS(),startQuat.getX(),startQuat.getY(),startQuat.getZ());
   // once we set the text emit it to the MainWindow where things are attached
   emit changeStartQuat(s);
-  s.sprintf("%f [%f,%f,%f]",endQuat.getS(),endQuat.getX(),endQuat.getY(),endQuat.getZ());
+  s.asprintf("%f [%f,%f,%f]",endQuat.getS(),endQuat.getX(),endQuat.getY(),endQuat.getZ());
   emit changeEndQuat(s);
-  s.sprintf("%f [%f,%f,%f]",i.getS(),i.getX(),i.getY(),i.getZ());
+  s.asprintf("%f [%f,%f,%f]",i.getS(),i.getX(),i.getY(),i.getZ());
   emit changeInterpQuat(s);
   emit clearMatrixText();
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_00,tx.m_01,tx.m_02,tx.m_03);
+  s.asprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_00,tx.m_01,tx.m_02,tx.m_03);
   emit appendMatrixText(s);
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_10,tx.m_11,tx.m_12,tx.m_13);
+  s.asprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_10,tx.m_11,tx.m_12,tx.m_13);
   emit appendMatrixText(s);
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_20,tx.m_21,tx.m_22,tx.m_23);
+  s.asprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_20,tx.m_21,tx.m_22,tx.m_23);
   emit appendMatrixText(s);
-  s.sprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_30,tx.m_31,tx.m_32,tx.m_33);
+  s.asprintf("[%+0.5f %+0.5f,%+0.5f,%+0.5f]",tx.m_30,tx.m_31,tx.m_32,tx.m_33);
   emit appendMatrixText(s);
 
-  s.sprintf("Interpolate value = %0.2f",m_interp);
+  s.asprintf("Interpolate value = %0.2f",m_interp);
   emit updateInterpText(s);
 
   
